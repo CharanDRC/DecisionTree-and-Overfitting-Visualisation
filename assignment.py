@@ -13,39 +13,31 @@ data_dict = {
 
 df = pd.DataFrame(data_dict)
 
-# Streamlit app
+
 st.title("Drug Effectiveness Prediction App")
 
-# Sidebar for user input
 st.sidebar.header("Adjust Model Parameters")
-
-# Choose max_depth using a slider
 max_depth = st.sidebar.slider("Select Max Depth", min_value=1, max_value=10, value=2)
-
-# Display the dataset
 st.write("## Loaded Data:")
 st.write(df.head())
 
-# Train a Decision Tree Regressor with the specified max_depth
 dtr = DecisionTreeRegressor(max_depth=max_depth)
 
-# Prepare X and y
 X = df.drop("Drug Effectiveness(%)", axis=1)
 y = df["Drug Effectiveness(%)"]
 
-# Fit the model
+
 model = dtr.fit(X, y)
 
-# Display the Decision Tree plot
+
 st.write("## Decision Tree Plot:")
 plt.figure(figsize=(10, 8))
 plot_tree(model, feature_names=X.columns, filled=True)
 st.pyplot()
 
-# Make predictions
 prediction = model.predict(X)
 
-# Display scatter plot of actual vs predicted values
+
 st.write("## Actual vs Predicted Values:")
 plt.scatter(x=df["Dosage(mg)"], y=y, label="Actual")
 plt.scatter(x=df["Dosage(mg)"], y=prediction, label="Predicted")
@@ -54,6 +46,6 @@ plt.ylabel("Drug Effectiveness(%)")
 plt.legend()
 st.pyplot()
 
-# Display Mean Squared Error
+
 mse = mean_squared_error(y, prediction)
 st.write(f"Mean Squared Error: {mse}")
